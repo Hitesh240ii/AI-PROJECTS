@@ -20,7 +20,7 @@ from app.errors import ConfigurationError
 PROJECT_ROOT = Path(__file__).resolve().parent.parent
 load_dotenv(PROJECT_ROOT / ".env")
 
-DEFAULT_GROQ_MODEL = "llama-3.3-70b-versatile"
+DEFAULT_GROQ_MODEL = "openai/gpt-oss-120b"
 
 
 def _read_int(name: str, default: int) -> int:
@@ -64,6 +64,7 @@ class Settings:
 
     # Qdrant: if qdrant_url is empty, embedded local storage at qdrant_path is used.
     qdrant_url: str = ""
+    qdrant_api_key: str = ""
     qdrant_path: Path = PROJECT_ROOT / "qdrant_storage"
     qdrant_collection: str = "knowledge_base"
 
@@ -98,6 +99,7 @@ class Settings:
             embedding_model=os.getenv("EMBEDDING_MODEL", "all-MiniLM-L6-v2").strip(),
             embedding_batch_size=_read_int("EMBEDDING_BATCH_SIZE", 32),
             qdrant_url=os.getenv("QDRANT_URL", "").strip(),
+            qdrant_api_key=os.getenv("QDRANT_API_KEY", "").strip(),
             qdrant_path=_read_path("QDRANT_PATH", "qdrant_storage"),
             qdrant_collection=os.getenv("QDRANT_COLLECTION", "knowledge_base").strip(),
             upload_dir=_read_path("UPLOAD_DIR", "data/uploads"),

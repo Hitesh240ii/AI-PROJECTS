@@ -50,9 +50,15 @@ def create_qdrant_client(settings: Settings) -> QdrantClient:
     """Remote Qdrant if QDRANT_URL is set, otherwise embedded local storage."""
     try:
         if settings.qdrant_url:
-            return QdrantClient(url=settings.qdrant_url, timeout=15)
+            return QdrantClient(
+                url=settings.qdrant_url,
+                api_key=settings.qdrant_api_key or None,
+                timeout=15,
+            )
+        
         settings.qdrant_path.mkdir(parents=True, exist_ok=True)
         return QdrantClient(path=str(settings.qdrant_path))
+    
     except Exception as exc:
         raise VectorStoreError(
             "Could not open the Qdrant vector database. Is another instance of the app "
