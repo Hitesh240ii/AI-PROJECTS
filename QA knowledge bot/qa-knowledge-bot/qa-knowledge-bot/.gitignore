@@ -1,6 +1,7 @@
 # Secrets
 .env
 *.key
+.env.example
 
 # Python
 __pycache__/
